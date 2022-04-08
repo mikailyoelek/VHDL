@@ -1,0 +1,54 @@
+////////////////////////////////////////////////////////////////////////////////
+// Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
+////////////////////////////////////////////////////////////////////////////////
+//   ____  ____ 
+//  /   /\/   / 
+// /___/  \  /    Vendor: Xilinx 
+// \   \   \/     Version : 14.7
+//  \   \         Application : sch2hdl
+//  /   /         Filename : fulladd.vf
+// /___/   /\     Timestamp : 02/22/2022 09:34:30
+// \   \  /  \ 
+//  \___\/\___\ 
+//
+//Command: sch2hdl -intstyle ise -family spartan3e -verilog "C:/Users/mikai/Qsync/HTL Rankweil Elektronik/4BHEL/DIC1_WALCHER/VHDL/fulladd_sch/fulladd.vf" -w "C:/Users/mikai/Qsync/HTL Rankweil Elektronik/4BHEL/DIC1_WALCHER/VHDL/fulladd_sch/fulladd.sch"
+//Design Name: fulladd
+//Device: spartan3e
+//Purpose:
+//    This verilog netlist is translated from an ECS schematic.It can be 
+//    synthesized and simulated, but it should not be modified. 
+//
+`timescale 1ns / 1ps
+
+module fulladd(A, 
+               B, 
+               Cin, 
+               Cout, 
+               SUM);
+
+    input A;
+    input B;
+    input Cin;
+   output Cout;
+   output SUM;
+   
+   wire XLXN_1;
+   wire XLXN_12;
+   wire XLXN_13;
+   
+   NAND2  XLXI_2 (.I0(Cin), 
+                 .I1(XLXN_1), 
+                 .O(XLXN_13));
+   NAND2  XLXI_3 (.I0(A), 
+                 .I1(B), 
+                 .O(XLXN_12));
+   NAND2  XLXI_4 (.I0(XLXN_12), 
+                 .I1(XLXN_13), 
+                 .O(Cout));
+   XOR2  XLXI_5 (.I0(Cin), 
+                .I1(XLXN_1), 
+                .O(SUM));
+   XOR2  XLXI_6 (.I0(B), 
+                .I1(A), 
+                .O(XLXN_1));
+endmodule
