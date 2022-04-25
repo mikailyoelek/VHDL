@@ -34,16 +34,20 @@ architecture Behavioral of count_7seg_basys2 is
 
 	constant DATA_WIDTH: integer:=4;
 	
+	
+	-- Zähler --
 	component counter -- Counter Komponenten-Deklaration
 		generic (
 			T_FAKTOR: integer;
-			DATA_WIDTH: integer
+			DATA_WIDTH: integer;
+			Q_MAX: integer
 		);
 		port( clk, reset: IN std_logic;
-				count:		OUt std_logic_vector (DATA_WIDTH-1 downto 0) 
+				count:		OUT std_logic_vector (DATA_WIDTH-1 downto 0) 
 		);
 	end component;
 	
+	-- 7-Seg-Anzeige--
 	component hex7seg -- 7-Seg.-Anzeige Komponenten-Deklaration
     port ( symb : in  STD_LOGIC_VECTOR (3 downto 0);
            a_to_g : out  STD_LOGIC_VECTOR (6 downto 0)
@@ -51,20 +55,33 @@ architecture Behavioral of count_7seg_basys2 is
 	end component;
 	
 	signal count_int : std_logic_vector(DATA_WIDTH-1 downto 0);
-	
+
 begin
-	
+
+	-- Zähler --		
 	CNT: counter
 		generic map(
-		);
-		port map ( 
+			T_FAKTOR => 50*10**6/2,
+			DATA_WIDTH => DATA_WIDTH,
+			Q_MAX => 9
+		)
+		port map (
+			clk => clk,
+			reset => reset,
+			count => count_int
 		);
 		
+	-- 7-Seg-Anzeige--	
 	DEC: hex7seg
-		generic map(
-		);
 		port map ( 
+			symb => count_int,
+			a_to_g => seg
 		);
-
+		
+	an <= "1110"; 	-- Digit AN0 aktiv
+	dp <= '1';		-- Dezimalpunkt aus
+	
+	count <= count_int;	-- Top-Level Zuweisung des Zählerstatus
+	
 end Behavioral;
 
